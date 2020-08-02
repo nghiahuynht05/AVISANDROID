@@ -1,0 +1,25 @@
+package hooksPackage;
+
+public class defineUI {
+    public static String HOME_PICKUP_ADDRESS = "%stvAddFromPickUp";
+    public static String HOME_SERVICE = "%srequestView";
+    public static String HOME_SEARCH_ADDRESS = "%sedtSearch";
+    public static String HOME_BOOK_NOW = "%sbtnRequestCab";
+    public static String HOME_BOOK_LATE = "%sbtnPreBook";
+    public static String HOME_LIST_ADDRESS = "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.support.v4.view.ViewPager/android.widget.LinearLayout/android.widget.ListView/android.widget.LinearLayout[%d]/android.widget.TextView";
+
+    public static String REQ_SEARCH_DESTINATION = "%sllDestination";
+    public static String REQ_BOOK_TYPE = "%sspnBookType";
+    public static String REQ_NOTES = "%sllllNotes";
+    public static String REQ_PROMO = "%scontainPromo";
+    public static String REQ_CREATE_BOOK = "%sbtnRequestCab";
+    public static String REQ_RIDE_SHARING = "%sllRideSharing";
+    public static String REQ_ADDITIONAL = "%stvAddServices";
+    public static String REQ_PAYMENT_METHOD = "%stvCreditCard";
+    public static String REQ_ETA_FARE = "%stvETAFare";
+    public static String REQ_BOOK_TYPE_SERVICE = "/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.ListView/android.widget.TextView[%d]";
+    public static String REQ_ADDITIONAL_SERVICE = "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.support.v7.widget.LinearLayoutCompat/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.ListView/android.widget.LinearLayout[%d]/android.widget.Switch";
+    public static String BUTTON_YES = "android:id/button1";
+    public static String BUTTON_NO = "android:id/button2";
+
+}
