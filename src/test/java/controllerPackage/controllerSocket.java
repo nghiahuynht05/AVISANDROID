@@ -18,8 +18,7 @@ import java.util.Properties;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertNotNull;
 
 public class controllerSocket implements interfaceSocket {
     private Socket socket;
@@ -171,7 +170,7 @@ public class controllerSocket implements interfaceSocket {
         try {
             socket.connect();
             Object[] args = (Object[]) values.take();
-            assertThat(args.length, is(1));
+            assertNotNull(args);
 
         } catch (InterruptedException e) {
             e.printStackTrace();

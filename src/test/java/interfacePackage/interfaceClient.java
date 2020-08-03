@@ -8,4 +8,5 @@ public interface interfaceClient {
     public Boolean waitingHomeScreen();
 
     public void touchBookType(String string);
+    public void requestBook();
 }

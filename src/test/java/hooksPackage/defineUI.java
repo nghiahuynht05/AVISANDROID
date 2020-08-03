@@ -6,7 +6,10 @@ public class defineUI {
     public static String HOME_SEARCH_ADDRESS = "%sedtSearch";
     public static String HOME_BOOK_NOW = "%sbtnRequestCab";
     public static String HOME_BOOK_LATE = "%sbtnPreBook";
-    public static String HOME_LIST_ADDRESS = "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.support.v4.view.ViewPager/android.widget.LinearLayout/android.widget.ListView/android.widget.LinearLayout[%d]/android.widget.TextView";
+    public static String SWITCH_MAP = "%saction_switch_location";
+
+    public static String LIST_ADDRESS_GG = "%slvLocation";
+    public static String LIST_ADDRESS = "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.support.v4.view.ViewPager/android.widget.LinearLayout/android.widget.ListView/android.widget.LinearLayout[%d]";
 
     public static String REQ_SEARCH_DESTINATION = "%sllDestination";
     public static String REQ_BOOK_TYPE = "%sspnBookType";

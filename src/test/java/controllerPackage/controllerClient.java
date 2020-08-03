@@ -40,16 +40,16 @@ public class controllerClient implements interfaceClient {
 
     public void touchToElementById(String resourceId) {
         resourceId = String.format(resourceId, appPackageId);
+        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
         element = (MobileElement) driver.findElementById(resourceId);
         element.click();
-        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
     }
 
-    public void touchToElementByXpath(String resourceId, String item) {
-        resourceId = resourceId + item;
+    public void touchToElementByXpath(String resourceId, Integer item) {
+        resourceId = String.format(resourceId, item);
+        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
         element = (MobileElement) driver.findElementByXPath(resourceId);
         element.click();
-        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
     }
 
     public void sendDataToElementById(String resourceId, String string) {
@@ -81,13 +81,13 @@ public class controllerClient implements interfaceClient {
     public void touchPickUp(String string) {
         touchToElementById(defineUI.HOME_PICKUP_ADDRESS);
         sendDataToElementById(defineUI.HOME_SEARCH_ADDRESS, string);
-        driver.hideKeyboard();
+        selectAddressList(1);
     }
 
     public void touchDestination(String string) {
         touchToElementById(defineUI.REQ_SEARCH_DESTINATION);
         sendDataToElementById(defineUI.HOME_SEARCH_ADDRESS, string);
-        driver.hideKeyboard();
+        selectAddressList(1);
     }
 
     public Boolean waitingHomeScreen() {
@@ -98,10 +98,21 @@ public class controllerClient implements interfaceClient {
         switch (string) {
             case "Now": {
                 touchToElementById(defineUI.HOME_BOOK_NOW);
+                break;
             }
             default: {
                 touchToElementById(defineUI.HOME_BOOK_LATE);
             }
         }
+    }
+
+    public void selectAddressList(Integer item) {
+        if (checkToElementById(defineUI.LIST_ADDRESS_GG)) {
+            touchToElementByXpath(defineUI.LIST_ADDRESS, item);
+        }
+    }
+
+    public void requestBook() {
+        touchToElementById(defineUI.REQ_CREATE_BOOK);
     }
 }

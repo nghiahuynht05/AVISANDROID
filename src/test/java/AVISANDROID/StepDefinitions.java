@@ -56,6 +56,16 @@ public class StepDefinitions {
         api.getETAFare();
     }
 
+    @Given("an api token after login command center")
+    public void tokenAuthorization() {
+        api.tokenAuthorization();
+    }
+
+    @Given("Touch request book button")
+    public void requestBook(String string) {
+        client.requestBook();
+    }
+
     @Given("findBookInCUE")
     public void findBookInCUE() {
         api.findBookInCUE();
