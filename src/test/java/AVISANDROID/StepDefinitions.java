@@ -1,18 +1,24 @@
 package AVISANDROID;
 
-import controllerPackage.*;
+import controllerPackage.controllerAPI;
+import controllerPackage.controllerClient;
+import controllerPackage.controllerSocket;
 import hooksPackage.hooks;
-import interfacePackage.*;
+import interfacePackage.interfaceAPI;
+import interfacePackage.interfaceClient;
+import interfacePackage.interfaceSocket;
 import io.appium.java_client.android.AndroidDriver;
 import io.cucumber.datatable.DataTable;
+import io.cucumber.java.After;
+import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
-
-import java.util.List;
+import io.socket.client.Socket;
 
 import static org.junit.Assert.assertTrue;
 
 public class StepDefinitions {
     AndroidDriver driver;
+    Socket Socket;
     hooks hooks;
     interfaceClient client;
     interfaceAPI api;
@@ -22,7 +28,7 @@ public class StepDefinitions {
     controllerSocket controllerSocket;
 
     public StepDefinitions() {
-        driver = hooks.setUp();
+//        driver = hooks.setUp();
         controller = new controllerClient(driver);
         controllerSocket = new controllerSocket();
         controllerAPI = new controllerAPI();
@@ -31,14 +37,32 @@ public class StepDefinitions {
         socket = new controllerSocket();
     }
 
+    @Before
+    public void startDriver() {
+        try {
+            driver = hooks.setUp();
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+    }
+
+    @After
+    public void clear() {
+        try {
+            Socket = hooks.clear();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
     @Given("Touch pickup address and input data")
-    public void touchPickUp(List<String> table) {
-        client.touchPickUp(table.get(1));
+    public void touchPickUp(DataTable table) {
+        client.touchPickUp(table);
     }
 
     @Given("Touch destination address and input data")
-    public void touchDestination(List<String> table) {
-        client.touchDestination(table.get(1));
+    public void touchDestination(DataTable table) {
+        client.touchDestination(table);
     }
 
     @Given("Touch book {string} button")
@@ -62,13 +86,8 @@ public class StepDefinitions {
     }
 
     @Given("Touch request book button")
-    public void requestBook(String string) {
-        client.requestBook();
-    }
-
-    @Given("findBookInCUE")
-    public void findBookInCUE() {
-        api.findBookInCUE();
+    public void requestBook() {
+        assertTrue(client.requestBook());
     }
 
     @Given("I should get the response ETA message matches with")

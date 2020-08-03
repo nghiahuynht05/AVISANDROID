@@ -28,6 +28,7 @@ public class controllerAPI implements interfaceAPI {
     JSONObject actualData = new JSONObject();
     JSONObject expectData = new JSONObject();
     public String tokenAuth;
+    public String bookId;
 
     public String getConfig(String string) {
         InputStream inputStream;
@@ -85,7 +86,6 @@ public class controllerAPI implements interfaceAPI {
 
     public String findBookInCUE() {
         final BlockingQueue<Object> values = new LinkedBlockingQueue<Object>();
-        System.out.println(getConfig("token"));
         HttpResponse<JsonNode> response = null;
         try {
             response = Unirest.post(getConfig("apiServer") + "/api/booking/find")
@@ -105,16 +105,18 @@ public class controllerAPI implements interfaceAPI {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        LOGGER.info("/api/booking/find result: {}", jsonObject);
         JSONObject resObj = jsonObject.getJSONObject("res");
         JSONArray listArray = resObj.getJSONArray("list");
         JSONObject object = listArray.getJSONObject(0);
+        LOGGER.info("/api/booking/find result: {}", listArray);
         LOGGER.info("/api/booking/find result: {}", object.get("bookId"));
         return (String) object.get("bookId");
     }
 
     public void getETAFare() {
         final BlockingQueue<Object> values = new LinkedBlockingQueue<Object>();
-        String bookId = findBookInCUE();
+        bookId = findBookInCUE();
         HttpResponse<JsonNode> response = null;
         try {
             response = Unirest.get(getConfig("apiServer") + "/api/booking/details?bookId=" + bookId)
@@ -164,4 +166,5 @@ public class controllerAPI implements interfaceAPI {
             return false;
         }
     }
+
 }

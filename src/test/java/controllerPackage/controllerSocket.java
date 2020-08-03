@@ -41,6 +41,16 @@ public class controllerSocket implements interfaceSocket {
         return IO.socket(getConfig("socketServer") + path, opts);
     }
 
+    String nsp() {
+        return "/";
+    }
+
+    IO.Options createOptions() {
+        IO.Options opts = new IO.Options();
+        opts.forceNew = true;
+        return opts;
+    }
+
     String getConfig(String string) {
         InputStream inputStream;
         Properties prop = new Properties();
@@ -62,16 +72,6 @@ public class controllerSocket implements interfaceSocket {
         }
 
         return prop.getProperty(string);
-    }
-
-    String nsp() {
-        return "/";
-    }
-
-    IO.Options createOptions() {
-        IO.Options opts = new IO.Options();
-        opts.forceNew = true;
-        return opts;
     }
 
     public void connectSocket(String string, List<String> table) throws URISyntaxException {

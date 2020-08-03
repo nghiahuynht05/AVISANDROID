@@ -1,12 +1,14 @@
 package interfacePackage;
 
-public interface interfaceClient {
-    public void touchPickUp(String string);
+import io.cucumber.datatable.DataTable;
 
-    public void touchDestination(String string);
+public interface interfaceClient {
+    public void touchPickUp(DataTable table);
+
+    public void touchDestination(DataTable table);
 
     public Boolean waitingHomeScreen();
 
     public void touchBookType(String string);
-    public void requestBook();
+    public Boolean requestBook();
 }

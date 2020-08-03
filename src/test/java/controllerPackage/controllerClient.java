@@ -4,9 +4,12 @@ import hooksPackage.defineUI;
 import interfacePackage.interfaceClient;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
+import io.cucumber.datatable.DataTable;
+import org.json.JSONException;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -78,16 +81,42 @@ public class controllerClient implements interfaceClient {
         }
     }
 
-    public void touchPickUp(String string) {
-        touchToElementById(defineUI.HOME_PICKUP_ADDRESS);
-        sendDataToElementById(defineUI.HOME_SEARCH_ADDRESS, string);
-        selectAddressList(1);
+    public void touchPickUp(DataTable table) {
+        for (Map<Object, Object> data : table.asMaps(String.class, String.class)) {
+            try {
+                if (data.get("mode").equals("google")) {
+                    touchToElementById(defineUI.HOME_PICKUP_ADDRESS);
+                    touchToElementById(defineUI.SWITCH_MAP);
+                    sendDataToElementById(defineUI.HOME_SEARCH_ADDRESS, (String) data.get("address"));
+                    selectAddressList(1);
+                } else {
+                    touchToElementById(defineUI.HOME_PICKUP_ADDRESS);
+                    sendDataToElementById(defineUI.HOME_SEARCH_ADDRESS, (String) data.get("address"));
+                    selectAddressList(1);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
-    public void touchDestination(String string) {
-        touchToElementById(defineUI.REQ_SEARCH_DESTINATION);
-        sendDataToElementById(defineUI.HOME_SEARCH_ADDRESS, string);
-        selectAddressList(1);
+    public void touchDestination(DataTable table) {
+        for (Map<Object, Object> data : table.asMaps(String.class, String.class)) {
+            try {
+                if (data.get("mode").equals("google")) {
+                    touchToElementById(defineUI.REQ_SEARCH_DESTINATION);
+                    touchToElementById(defineUI.SWITCH_MAP);
+                    sendDataToElementById(defineUI.HOME_SEARCH_ADDRESS, (String) data.get("address"));
+                    selectAddressList(1);
+                } else {
+                    touchToElementById(defineUI.REQ_SEARCH_DESTINATION);
+                    sendDataToElementById(defineUI.HOME_SEARCH_ADDRESS, (String) data.get("address"));
+                    selectAddressList(1);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public Boolean waitingHomeScreen() {
@@ -107,12 +136,25 @@ public class controllerClient implements interfaceClient {
     }
 
     public void selectAddressList(Integer item) {
-        if (checkToElementById(defineUI.LIST_ADDRESS_GG)) {
+        try {
+            Thread.sleep(10000);
             touchToElementByXpath(defineUI.LIST_ADDRESS, item);
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 
-    public void requestBook() {
-        touchToElementById(defineUI.REQ_CREATE_BOOK);
+    public Boolean requestBook() {
+        try {
+            // Stop and waiting response eta from payment server
+            Thread.sleep(10000);
+            touchToElementById(defineUI.REQ_CREATE_BOOK);
+            if (checkToElementById(defineUI.REQ_SUCCESS)) {
+                return true;
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

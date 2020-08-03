@@ -8,12 +8,12 @@ Feature: Check case ETA request book from Pax
 
   Scenario: 01. Check ETA fare request from Pax app
     Given Touch pickup address and input data
-      | address       |
-      | 21 hoang dieu |
+      | mode   | address       |
+      | google | 21 hoang dieu |
     And Touch book "Now" button
     And Touch destination address and input data
-      | address            |
-      | 21 phan chau trinh |
+      | mode   | address            |
+      | google | 21 phan chau trinh |
 
     And Touch request book button
     When I want to get info ETA from CUE

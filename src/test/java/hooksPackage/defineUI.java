@@ -22,6 +22,8 @@ public class defineUI {
     public static String REQ_ETA_FARE = "%stvETAFare";
     public static String REQ_BOOK_TYPE_SERVICE = "/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.ListView/android.widget.TextView[%d]";
     public static String REQ_ADDITIONAL_SERVICE = "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.support.v7.widget.LinearLayoutCompat/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.ListView/android.widget.LinearLayout[%d]/android.widget.Switch";
+    public static String REQ_SUCCESS = "%saction_bar_root";
+    public static String LOADING = "%scustom";
     public static String BUTTON_YES = "android:id/button1";
     public static String BUTTON_NO = "android:id/button2";
 
