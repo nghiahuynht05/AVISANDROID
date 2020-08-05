@@ -27,10 +27,10 @@ public class controllerAPI implements interfaceAPI {
     public static Logger LOGGER = LogManager.getLogger(controllerAPI.class);
     JSONObject actualData = new JSONObject();
     JSONObject expectData = new JSONObject();
-    public String tokenAuth;
-    public String bookId;
+    public static String tokenAuth;
+    public static String bookId;
 
-    public String getConfig(String string) {
+    public static String getConfig(String string) {
         InputStream inputStream;
         Properties prop = new Properties();
         String propFileName = "config.properties";
@@ -139,7 +139,11 @@ public class controllerAPI implements interfaceAPI {
         JSONObject estimateObj = requestObj.getJSONObject("estimate");
         JSONObject fareObj = estimateObj.getJSONObject("fare");
         actualData.put("distance", estimateObj.get("distance"));
-        actualData.put("etaFare", fareObj.get("etaFare"));
+        try {
+            actualData.put("etaFare", fareObj.get("etaFare"));
+        } catch (Exception ex) {
+            actualData.put("etaFare", 0);
+        }
         actualData.put("time", estimateObj.get("time"));
         LOGGER.info("ETA fare find booking: {}: {}", bookId, actualData);
     }

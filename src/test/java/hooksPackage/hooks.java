@@ -26,8 +26,8 @@ import static org.junit.Assert.assertNotNull;
 public class hooks {
     private static AndroidDriver driver;
     public static Logger LOGGER = LogManager.getLogger(hooks.class);
-    Socket socket;
-    controllerAPI client;
+    static Socket socket;
+    static controllerAPI client;
 
     Socket client() throws URISyntaxException {
         return client(createOptions());
@@ -95,13 +95,13 @@ public class hooks {
         return driver;
     }
 
-    public Socket clear() {
+    public static void clear() {
         final BlockingQueue<Object> values = new LinkedBlockingQueue<Object>();
-
-        IO.Options opts = new IO.Options();
-        opts.forceNew = true;
-        opts.reconnection = false;
         try {
+            IO.Options opts = new IO.Options();
+            opts.forceNew = true;
+            opts.reconnection = false;
+            LOGGER.info("Socket URL: {}, {} ", client.getConfig("socketServer"), opts);
             socket = IO.socket(client.getConfig("socketServer"), opts);
             socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
                 @Override
@@ -109,20 +109,26 @@ public class hooks {
                     JSONObject params = new JSONObject();
                     params.put("token", client.tokenAuth);
                     params.put("fleetId", client.getConfig("fleetId"));
+                    LOGGER.info("Emit socket: {}, data: {}", "ccLiteLogin", params);
                     socket.emit("ccLiteLogin", params);
                 }
             }).on("ccLiteLogin", new Emitter.Listener() {
                 @Override
                 public void call(Object... objects) {
+                    JSONObject object = new JSONObject();
+                    LOGGER.info("On socket: {}, data: {}", "ccLiteLogin", object);
                     JSONObject params = new JSONObject();
                     params.put("bookId", client.bookId);
+                    LOGGER.info("Emit socket: {}, data: {}", "cancelBookingCC", params);
                     socket.emit("cancelBookingCC", params);
                 }
             }).on("cancelBookingCC", new Emitter.Listener() {
                 @Override
                 public void call(Object... objects) {
                     JSONObject object = (JSONObject) objects[0];
-                    if (object.get("error").equals(400)) {
+                    LOGGER.info("On socket: {}, data: {}", "cancelBookingCC", object);
+
+                    if (!(object.get("returnCode").equals(200))) {
                         JSONObject incidentParams = new JSONObject();
                         JSONObject operatorParams = new JSONObject();
                         operatorParams.put("name", "Auto Test");
@@ -130,6 +136,7 @@ public class hooks {
                         incidentParams.put("bookId", client.bookId);
                         incidentParams.put("reason", client.bookId);
                         incidentParams.put("operator", operatorParams);
+                        LOGGER.info("Emit socket: {}, data: {}", "incident", incidentParams);
                         socket.emit("incident", incidentParams);
                     }
                     values.offer(objects);
@@ -137,6 +144,8 @@ public class hooks {
             }).on("incident", new Emitter.Listener() {
                 @Override
                 public void call(Object... objects) {
+                    JSONObject object = new JSONObject();
+                    LOGGER.info("On socket: {}, data: {}", "ccLiteLogin", object);
                     values.offer(objects);
                 }
             });
@@ -152,6 +161,6 @@ public class hooks {
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
-        return null;
+
     }
 }

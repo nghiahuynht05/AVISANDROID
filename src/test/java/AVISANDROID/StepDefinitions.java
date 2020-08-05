@@ -10,7 +10,6 @@ import interfacePackage.interfaceSocket;
 import io.appium.java_client.android.AndroidDriver;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.After;
-import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.socket.client.Socket;
 
@@ -37,19 +36,19 @@ public class StepDefinitions {
         socket = new controllerSocket();
     }
 
-    @Before
-    public void startDriver() {
-        try {
-            driver = hooks.setUp();
-        }catch (Exception ex){
-            ex.printStackTrace();
-        }
-    }
+//    @Before
+//    public void startDriver() {
+//        try {
+//            driver = hooks.setUp();
+//        }catch (Exception ex){
+//            ex.printStackTrace();
+//        }
+//    }
 
     @After
     public void clear() {
         try {
-            Socket = hooks.clear();
+            hooks.clear();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -95,4 +94,8 @@ public class StepDefinitions {
         api.matchesETAFare(table);
     }
 
+    @Given("Test Socket")
+    public void testSocket(){
+        socket.gListBooking();
+    }
 }
