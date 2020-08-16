@@ -136,6 +136,8 @@ public class controllerAPI implements interfaceAPI {
         }
         JSONObject resObj = jsonObject.getJSONObject("res");
         JSONObject requestObj = resObj.getJSONObject("request");
+        actualData.put("typeRate", requestObj.get("typeRate"));
+        actualData.put("type", requestObj.get("type"));
         JSONObject estimateObj = requestObj.getJSONObject("estimate");
         JSONObject fareObj = estimateObj.getJSONObject("fare");
         actualData.put("distance", estimateObj.get("distance"));
@@ -154,16 +156,19 @@ public class controllerAPI implements interfaceAPI {
                 expectData.put("distance", data.get("distance"));
                 expectData.put("etaFare", data.get("etaFare"));
                 expectData.put("time", data.get("time"));
+                expectData.put("typeRate", (data.get("typeRate") != null) ? data.get("typeRate") : null);
+                expectData.put("type", (data.get("type") != null) ? data.get("type") : null);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
         LOGGER.info("Expected data: {}", expectData);
         LOGGER.info("Actual data: {}", actualData);
-        String expectDateString = expectData.toString();
-        String responseDateString = actualData.toString();
-        if (expectDateString.equals(responseDateString)) {
+        String expectDataString = expectData.toString();
+        String responseDataString = actualData.toString();
+        if (expectDataString.equals(responseDataString)) {
             LOGGER.info("Expected data matching is response data");
+            System.out.println();
             return true;
         } else {
             LOGGER.info("Expected data NOT matching is response data");

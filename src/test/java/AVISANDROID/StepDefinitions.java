@@ -13,6 +13,8 @@ import io.cucumber.java.After;
 import io.cucumber.java.en.Given;
 import io.socket.client.Socket;
 
+import java.util.List;
+
 import static org.junit.Assert.assertTrue;
 
 public class StepDefinitions {
@@ -27,7 +29,7 @@ public class StepDefinitions {
     controllerSocket controllerSocket;
 
     public StepDefinitions() {
-//        driver = hooks.setUp();
+        driver = hooks.setUp();
         controller = new controllerClient(driver);
         controllerSocket = new controllerSocket();
         controllerAPI = new controllerAPI();
@@ -35,15 +37,6 @@ public class StepDefinitions {
         api = new controllerAPI();
         socket = new controllerSocket();
     }
-
-//    @Before
-//    public void startDriver() {
-//        try {
-//            driver = hooks.setUp();
-//        }catch (Exception ex){
-//            ex.printStackTrace();
-//        }
-//    }
 
     @After
     public void clear() {
@@ -69,6 +62,26 @@ public class StepDefinitions {
         client.touchBookType(string);
     }
 
+    @Given("Select service type {string}")
+    public void selectServiceType(String string) {
+        client.selectServiceType(string);
+    }
+
+    @Given("Select car type {string}")
+    public void selectCarType(String string) {
+        client.selectCarType(string);
+    }
+
+    @Given("I want to get content message")
+    public  void getContentMsg(){
+        client.getContentMsg();
+    }
+
+    @Given("I should get the response message matches with")
+    public void matchResponseMsg(List<String> table){
+        assertTrue(client.matchResponseMsg(table.get(1)));;
+    }
+
     @Given("Waiting open app success")
     public void waitingHomeScreen() {
         assertTrue(client.waitingHomeScreen());
@@ -91,7 +104,7 @@ public class StepDefinitions {
 
     @Given("I should get the response ETA message matches with")
     public void matchesETAFare(DataTable table) {
-        api.matchesETAFare(table);
+        assertTrue(api.matchesETAFare(table));
     }
 
     @Given("Test Socket")

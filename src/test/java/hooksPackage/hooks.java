@@ -3,7 +3,6 @@ package hooksPackage;
 import controllerPackage.controllerAPI;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
-import io.cucumber.java.Before;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
@@ -55,7 +54,6 @@ public class hooks {
         return opts;
     }
 
-    @Before
     public static AndroidDriver setUp() {
         System.setProperty("log4j.configurationFile", "./log4j2.properties");
 
@@ -91,6 +89,7 @@ public class hooks {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+        LOGGER.info("Android Driver: {} ", "Start success");
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         return driver;
     }

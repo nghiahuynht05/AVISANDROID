@@ -10,5 +10,14 @@ public interface interfaceClient {
     public Boolean waitingHomeScreen();
 
     public void touchBookType(String string);
+
     public Boolean requestBook();
+
+    public void selectServiceType(String string);
+
+    public void selectCarType(String string);
+
+    public void getContentMsg();
+
+    public Boolean matchResponseMsg(String string);
 }

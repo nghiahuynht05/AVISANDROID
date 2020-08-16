@@ -9,5 +9,6 @@ public interface interfaceAPI {
     public Boolean matchesETAFare(DataTable table);
 
     public String findBookInCUE() throws JSONException;
+
     public String tokenAuthorization();
 }
