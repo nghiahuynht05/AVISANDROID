@@ -154,10 +154,10 @@ public class controllerAPI implements interfaceAPI {
         for (Map<Object, Object> data : dataTable.asMaps(String.class, String.class)) {
             try {
                 expectData.put("distance", data.get("distance"));
-                expectData.put("etaFare", data.get("etaFare"));
+                expectData.put("etaFare", Integer.parseInt(data.get("etaFare").toString()));
                 expectData.put("time", data.get("time"));
-                expectData.put("typeRate", (data.get("typeRate") != null) ? data.get("typeRate") : null);
-                expectData.put("type", (data.get("type") != null) ? data.get("type") : null);
+                expectData.put("typeRate", (data.get("typeRate") != null) ? Integer.parseInt(data.get("typeRate").toString()) : null);
+                expectData.put("type", (data.get("type") != null) ? Integer.parseInt(data.get("type").toString()) : null);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

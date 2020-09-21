@@ -26,6 +26,7 @@ public class defineUI {
     public static String REQ_SUCCESS = "%saction_bar_root";
     public static String REQ_POPUP = "parentPanel";
     public static String LOADING = "%scustom";
+    public static String PROGRESS ="%sprogressBar";
     public static String BUTTON_YES = "android:id/button1";
     public static String BUTTON_NO = "android:id/button2";
     public static String MESSAGE = "android:id/message";
