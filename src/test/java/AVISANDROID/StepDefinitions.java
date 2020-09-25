@@ -62,9 +62,24 @@ public class StepDefinitions {
         client.touchBookType(string);
     }
 
+    @Given("Set time pickup before {string} hours and {string} minustes from the current time")
+    public void selectPickUpTime(String hours, String mins) {
+        client.selectPickUpTime(hours, mins);
+    }
+
     @Given("Select service type {string}")
     public void selectServiceType(String string) {
         client.selectServiceType(string);
+    }
+
+    @Given("Select payment method {string}")
+    public void selectPaymentMethod(String string) {
+        client.selectPaymentMethod(string);
+    }
+
+    @Given("Select type of ride {string}")
+    public void selectTypeRide(String string) {
+        client.selectTypeRide(string);
     }
 
     @Given("Select car type {string}")
@@ -73,13 +88,14 @@ public class StepDefinitions {
     }
 
     @Given("I want to get content message")
-    public  void getContentMsg(){
+    public void getContentMsg() {
         client.getContentMsg();
     }
 
     @Given("I should get the response message matches with")
-    public void matchResponseMsg(List<String> table){
-        assertTrue(client.matchResponseMsg(table.get(1)));;
+    public void matchResponseMsg(List<String> table) {
+        assertTrue(client.matchResponseMsg(table.get(1)));
+        ;
     }
 
     @Given("Waiting open app success")
@@ -90,6 +106,11 @@ public class StepDefinitions {
     @Given("I want to get info ETA from CUE")
     public void getETAFare() {
         api.getETAFare();
+    }
+
+    @Given("I want to get info payment method from CUE")
+    public void getPaymentMethod() {
+        api.getPaymentMethod();
     }
 
     @Given("an api token after login command center")
@@ -107,8 +128,13 @@ public class StepDefinitions {
         assertTrue(api.matchesETAFare(table));
     }
 
+    @Given("I should get the response payment method message matches with")
+    public void matchesPaymentMethod(DataTable table) {
+        assertTrue(api.matchesPaymentMethod(table));
+    }
+
     @Given("Test Socket")
-    public void testSocket(){
+    public void testSocket() {
         socket.gListBooking();
     }
 }

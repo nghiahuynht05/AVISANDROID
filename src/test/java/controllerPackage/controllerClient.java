@@ -5,12 +5,17 @@ import interfacePackage.interfaceClient;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
 import io.cucumber.datatable.DataTable;
+import io.cucumber.messages.internal.com.google.common.collect.ImmutableMap;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONException;
+import org.openqa.selenium.By;
 
+import java.awt.*;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.sql.Time;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.BlockingQueue;
@@ -77,7 +82,7 @@ public class controllerClient implements interfaceClient {
         final BlockingQueue<Object> values = new LinkedBlockingQueue<Object>();
 
         try {
-            driver.manage().timeouts().implicitlyWait(120, TimeUnit.SECONDS);
+            driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
             resourceId = String.format(resourceId, appPackageId);
             element = (MobileElement) driver.findElementById(resourceId);
             values.offer(element);
@@ -95,7 +100,7 @@ public class controllerClient implements interfaceClient {
     public void touchPickUp(DataTable table) {
         for (Map<Object, Object> data : table.asMaps(String.class, String.class)) {
             touchToElementById(defineUI.HOME_PICKUP_ADDRESS);
-            if(checkToElementById(defineUI.HOME_SEARCH_ADDRESS)) {
+            if (checkToElementById(defineUI.HOME_SEARCH_ADDRESS)) {
                 try {
                     if (data.get("mode").equals("google")) {
                         touchToElementById(defineUI.SWITCH_MAP);
@@ -144,6 +149,22 @@ public class controllerClient implements interfaceClient {
         }
     }
 
+    public void selectPickUpTime(String hours, String mins) {
+        int hour = Integer.parseInt(hours);
+        int min = Integer.parseInt(mins);
+        while (hour > 0) {
+            driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+            driver.findElement(By.xpath("//android.widget.LinearLayout/android.widget.TimePicker/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.NumberPicker[1]/android.widget.Button[2]")).click();
+            hour--;
+        }
+        while (min > 0) {
+            driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+            driver.findElement(By.xpath("//android.widget.LinearLayout/android.widget.TimePicker/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.NumberPicker[2]/android.widget.Button[2]")).click();
+            min--;
+        }
+        driver.findElementById(String.format(defineUI.BUTTON_YES, appPackageId)).click();
+    }
+
     public void selectAddressList(Integer item) {
         try {
             Thread.sleep(10000);
@@ -161,6 +182,29 @@ public class controllerClient implements interfaceClient {
                 break;
             default:
                 touchToElementByXpath(defineUI.REQ_BOOK_TYPE_SERVICE, 2);
+        }
+    }
+
+    public void selectPaymentMethod(String string) {
+        touchToElementById(defineUI.REQ_PAYMENT_METHOD);
+        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+        List<MobileElement> list = (List<MobileElement>) driver.findElementsById(String.format(defineUI.REQ_CARDHOLDER, appPackageId));
+        int listSize = list.size();
+        for (int i = 0; i < listSize; i++) {
+            if (list.get(i).getText().equals(string)) {
+                list.get(i).click();
+            }
+        }
+        touchToElementById(defineUI.BUTTON_YES);
+    }
+
+    public void selectTypeRide(String string) {
+        switch (string) {
+            case "Personal":
+                touchToElementById(defineUI.HOME_RIDE_PERSONAL);
+                break;
+            default:
+                touchToElementById(defineUI.HOME_RIDE_BUSINESS);
         }
     }
 
@@ -196,12 +240,11 @@ public class controllerClient implements interfaceClient {
     }
 
     public Boolean matchResponseMsg(String string) {
-        LOGGER.info( "Actual response data: {} ", actualData );
-        LOGGER.info( "Excepted data: {}", string );
-        if(string.equals(actualData)) {
+        LOGGER.info("Actual response data: {} ", actualData);
+        LOGGER.info("Excepted data: {}", string);
+        if (string.equals(actualData)) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }

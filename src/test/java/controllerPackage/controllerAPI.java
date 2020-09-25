@@ -142,22 +142,70 @@ public class controllerAPI implements interfaceAPI {
         JSONObject fareObj = estimateObj.getJSONObject("fare");
         actualData.put("distance", estimateObj.get("distance"));
         try {
-            actualData.put("etaFare", fareObj.get("etaFare"));
+            actualData.put("etaFare", Double.valueOf(fareObj.get("etaFare").toString()));
         } catch (Exception ex) {
-            actualData.put("etaFare", 0);
+            actualData.put("etaFare", "0");
         }
         actualData.put("time", estimateObj.get("time"));
         LOGGER.info("ETA fare find booking: {}: {}", bookId, actualData);
     }
 
+    public void getPaymentMethod() {
+        final BlockingQueue<Object> values = new LinkedBlockingQueue<Object>();
+        bookId = findBookInCUE();
+        HttpResponse<JsonNode> response = null;
+        try {
+            response = Unirest.get(getConfig("apiServer") + "/api/booking/details?bookId=" + bookId)
+                    .header("Authorization", tokenAuth)
+                    .asJson();
+        } catch (UnirestException e) {
+            e.printStackTrace();
+        }
+        JSONObject jsonObject = response.getBody().getObject();
+        values.offer(jsonObject);
+        try {
+            JSONObject args = (JSONObject) values.take();
+            assertNotNull(args);
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        JSONObject resObj = jsonObject.getJSONObject("res");
+        JSONObject requestObj = resObj.getJSONObject("request");
+        actualData.put("paymentType", requestObj.get("paymentType"));
+        LOGGER.info("Payment method find booking: {}: {}", bookId, actualData);
+    }
+
     public Boolean matchesETAFare(DataTable dataTable) {
         for (Map<Object, Object> data : dataTable.asMaps(String.class, String.class)) {
             try {
-                expectData.put("distance", data.get("distance"));
-                expectData.put("etaFare", Integer.parseInt(data.get("etaFare").toString()));
-                expectData.put("time", data.get("time"));
+                expectData.put("distance", (data.get("distance") != null) ? data.get("distance") : null);
+                expectData.put("etaFare", (Double.valueOf(data.get("etaFare").toString()) != null) ? Double.valueOf(data.get("etaFare").toString()) : null);
+                expectData.put("time", (data.get("time") != null) ? data.get("time") : null);
                 expectData.put("typeRate", (data.get("typeRate") != null) ? Integer.parseInt(data.get("typeRate").toString()) : null);
                 expectData.put("type", (data.get("type") != null) ? Integer.parseInt(data.get("type").toString()) : null);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        LOGGER.info("Expected data: {}", expectData);
+        LOGGER.info("Actual data: {}", actualData);
+        String expectDataString = expectData.toString();
+        String responseDataString = actualData.toString();
+        if (expectDataString.equals(responseDataString)) {
+            LOGGER.info("Expected data matching is response data");
+            System.out.println();
+            return true;
+        } else {
+            LOGGER.info("Expected data NOT matching is response data");
+            return false;
+        }
+    }
+
+    public Boolean matchesPaymentMethod(DataTable dataTable) {
+        for (Map<Object, Object> data : dataTable.asMaps(String.class, String.class)) {
+            try {
+                expectData.put("paymentType", Integer.parseInt(data.get("paymentType").toString()));
             } catch (JSONException e) {
                 e.printStackTrace();
             }

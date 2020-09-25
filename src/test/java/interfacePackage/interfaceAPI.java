@@ -11,4 +11,8 @@ public interface interfaceAPI {
     public String findBookInCUE() throws JSONException;
 
     public String tokenAuthorization();
+
+    public void getPaymentMethod();
+
+    public Boolean matchesPaymentMethod(DataTable table);
 }
